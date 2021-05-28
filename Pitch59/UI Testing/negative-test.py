@@ -9,6 +9,7 @@ signupURL = "api/account/sign-up?otp_check=true"
 # set a variable to equal the URL
 pitch59_URL = f"https://api.p59.dev/{signupURL}"
 
+
 # fake user info
 emailId = "lakeramn21@gmail.com"
 password = "BetterThanCap10"
