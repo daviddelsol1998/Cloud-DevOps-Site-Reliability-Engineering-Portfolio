@@ -6,7 +6,8 @@ class WebsiteTestUser(HttpUser):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.data = """{"firstName": "Tony",
+        # initialize user data
+        self.data = """{"firstName": "Tony", 
                      "lastName": "Stark",
                      "isTesterUser": true,
                      "contactNumber": "(999) 999-9986",
@@ -24,23 +25,12 @@ class WebsiteTestUser(HttpUser):
                      },
                      "otpCode": 9865}"""
 
-    def on_start(self):
-        pass
-
-    def on_stop(self):
-        pass
-
     @task(1)
-    def post(self):      
-        response = self.client.post(url='https://api.p59.dev/api/account/sign-up?otp_check=true',headers={"content-type":"application/json"}, data=self.data)
+    def post(self):
+        response = self.client.post(url='https://api.p59.dev/api/account/sign-up?otp_check=true',
+                                    headers={"content-type": "application/json"}, data=self.data)  # create user
         json_response_dict = response.json()
-        newuserid = json_response_dict["data"]["userId"]
+        userid = json_response_dict["data"]["userId"]
         token = json_response_dict["data"]["token"]
-        self.client.post(url=f'https://api.p59.dev/api/users/{newuserid}/deleteTestUser',headers={"Authorization":"bearer " + token})
-        
-
-
-
-
-
-
+        self.client.post(url=f'https://api.p59.dev/api/users/{userid}/deleteTestUser',
+                         headers={"Authorization": "bearer " + token})  # delete user
